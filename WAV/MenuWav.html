@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="x-icon" href="../image/log.png">
+    <title>SHADO</title>
+    <link rel="stylesheet" href="MenuWav.css">
+</head>
+<body>
+    <div class="container">
+        <div class="glass">
+            <h2 class="tittle1">Teori Quantum Wavelet</h2>
+            <a href="../W.pdf" id="pdfButton" class="button-19">Lihat Materi</a>
+            <img src="../image/buku.png" class="buku">
+            <h2 class="tittle2">Asah pengetahuanmu dengan Quiz sederhana</h2>
+            <a href="../WAV/QuisWav/QDWav.html" class="button-18">Quiz</a>
+            <img src="../image/ujian.png" class="ujian">
+
+            <a href="../html/Dasar.html" class="button-28">Kembali</a>
+        </div>
+    </div>
+
+    <script>
+        // Ambil tombol berdasarkan ID
+ const pdfButton = document.getElementById('pdfButton');
+
+ // Tambahkan event listener untuk mendeteksi klik pada tombol
+ pdfButton.addEventListener('click', function(event) {
+   event.preventDefault(); // Mencegah aksi default dari tautan (navigasi ke halaman lain)
+
+   // Ambil URL dari tautan href
+   const pdfUrl = pdfButton.getAttribute('href');
+
+   // Buka PDF di jendela baru
+   window.open(pdfUrl, '_blank');
+ });
+   </script>
+</body>
+</html>

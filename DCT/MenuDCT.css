@@ -1,0 +1,302 @@
+*{
+    margin: 0;
+    padding: 0;  
+}
+.container{
+    width: 100%;
+    height: 100vh;
+    background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url(../image/background.jpg);
+    background-position: center;
+    background-size: cover;
+    padding-left: 8%;
+    padding-right: 8%;
+    box-sizing: border-box;
+}
+.glass{
+    position: absolute;
+    background: transparent;
+    border: 2px solid rgba(255,255,255,0.5);
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    padding-left: 8%;
+    padding-right: 8%;
+    top: 16px;
+    bottom: 20px;
+    right: 100px;
+    left: 100px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.tittle1{
+    position: absolute;
+    font-family: Georgia, Times, "Times New Roman", serif;
+    text-decoration: none;
+    color: #fff;
+    font-size: 20px;
+    top: 15%;
+    left: 12%;
+}
+.tittle2{
+    position: absolute;
+    font-family: Georgia, Times, "Times New Roman", serif;
+    text-decoration: none;
+    color: #fff;
+    font-size: 20px;
+    bottom: 40%;
+    right: 4%;
+}
+.buku{
+    position: absolute;
+    z-index:-1;
+    width: 500px;
+    height: 250px;
+    right: 180px;
+    top: 60px;
+}
+
+.ujian{
+    position: absolute;
+    z-index:-1;
+    width: 500px;
+    height: 250px;
+    left: 240px;
+    top: 300px;
+}
+
+/* CSS */
+.button-19 {
+    appearance: button;
+    background-color: #1899D6;
+    border: solid transparent;
+    border-radius: 16px;
+    border-width: 0 0 4px;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    font-family: din-round,sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: .8px;
+    line-height: 20px;
+    margin: 0;
+    outline: none;
+    overflow: visible;
+    padding: 13px 16px;
+    text-align: center;
+    text-transform: uppercase;
+    touch-action: manipulation;
+    transform: translateZ(0);
+    transition: filter .2s;
+    user-select: none;
+    -webkit-user-select: none;
+    vertical-align: middle;
+    white-space: nowrap;
+    width: 20%;
+    position: absolute;
+    left: 25%;
+    top: 20%;
+    text-decoration: none;
+}
+
+.button-19:after {
+    background-clip: padding-box;
+    background-color: #1CB0F6;
+    border: solid transparent;
+    border-radius: 16px;
+    border-width: 0 0 4px;
+    bottom: -4px;
+    content: "";
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: -1;
+}
+
+.button-19:main,
+.button-19:focus {
+    user-select: auto;
+}
+
+.button-19:hover:not(:disabled) {
+    filter: brightness(1.1);
+    -webkit-filter: brightness(1.1);
+}
+
+.button-19:disabled {
+    cursor: auto;
+}
+
+/* CSS */
+.button-18 {
+    appearance: button;
+    background-color: #1899D6;
+    border: solid transparent;
+    border-radius: 16px;
+    border-width: 0 0 4px;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    font-family: din-round,sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: .8px;
+    line-height: 20px;
+    margin: 0;
+    outline: none;
+    overflow: visible;
+    padding: 13px 16px;
+    text-align: center;
+    text-transform: uppercase;
+    touch-action: manipulation;
+    transform: translateZ(0);
+    transition: filter .2s;
+    user-select: none;
+    -webkit-user-select: none;
+    vertical-align: middle;
+    white-space: nowrap;
+    width: 20%;
+    position: absolute;
+    right: 20%;
+    bottom: 30%;
+    text-decoration: none;
+}
+
+.button-18:after {
+    background-clip: padding-box;
+    background-color: #1CB0F6;
+    border: solid transparent;
+    border-radius: 16px;
+    border-width: 0 0 4px;
+    bottom: -4px;
+    content: "";
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: -1;
+}
+
+.button-18:main,
+.button-18:focus {
+    user-select: auto;
+}
+
+.button-18:hover:not(:disabled) {
+    filter: brightness(1.1);
+    -webkit-filter: brightness(1.1);
+}
+
+.button-18:disabled {
+    cursor: auto;
+}
+
+/* CSS */
+.button-28 {
+    appearance: none;
+    background-color: transparent;
+    border: 2px solid #93deff;
+    border-radius: 15px;
+    box-sizing: border-box;
+    color: #3B3B3B;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    font-size: 16px;
+    font-weight: 600;
+    line-height: normal;
+    margin: 0;
+    min-height: 60px;
+    min-width: 0;
+    outline: none;
+    padding: 16px 24px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: 20%;
+    will-change: transform;
+    position: absolute;
+    left: 10%;
+    bottom: 10%;
+}
+
+.button-28:disabled {
+    pointer-events: none;
+}
+
+.button-28:hover {
+    color: #fff;
+    background-color: #1CB0F6;
+    box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+    transform: translateY(-2px);
+}
+
+.button-28:active {
+    box-shadow: none;
+    transform: translateY(0);
+}
+@media screen and (max-width: 768px){
+    .container {
+        height: 200vh;
+        padding-left: 100%;
+        padding-right: 100%;
+    }
+    .glass {
+        width: 120%;
+        height: 190vh;
+    }
+    .tittle1{
+        top: 5%;
+        left: 10%;
+    }
+    .tittle2{
+        top: 40%;
+        left: 10%;
+    }
+    .button-19{
+        top: 30%;
+        width: auto;
+        left: 40%;
+    }
+    .buku {
+        width: auto;
+        top: 10%;
+        left: 25%;
+    }
+    .ujian{
+        width: auto;
+        top: 45%;
+        left: 20%;
+    }
+    .button-18{
+        top: 75%;
+        bottom: auto;
+        left: 40%;
+    }
+    .button-28{
+        width: auto;
+       
+    }
+}
+@media screen and (min-width: 769px) and (max-width: 1473px){
+    .buku {
+        width: auto;
+        top: 7%;
+        left: auto;
+    }
+    .ujian{
+        width: auto;
+        top: 38%;
+        left: 20%;
+    }
+    .tittle1,
+    .tittle2{
+        font-size: auto;
+    }
+}

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" type="x-icon" href="image/log.png">
+        <!--========== BOX ICONS ==========-->
+        <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
+
+        <!--========== CSS ==========-->
+        <link rel="stylesheet" href="assets/css/styles.css">
+
+        <title>SHADO</title>
+    </head>
+    <body>
+        
+        <!--========== SCROLL TOP ==========-->
+        <a href="#" class="scrolltop" id="scroll-top">
+            <i class='bx bx-chevron-up scrolltop__icon'></i>
+        </a>
+
+        <!--========== HEADER ==========-->
+        <header class="l-header" id="header">
+            <nav class="nav bd-container">
+                
+                <img src="image/logo.png" class="logo">
+                <div class="nav__menu" id="nav-menu">
+                    <ul class="nav__list">
+                        <li class="nav__item"><a href="#home" class="nav__link active-link">Home</a></li>
+                        <li class="nav__item"><a href="#about" class="nav__link">Teori</a></li>
+                        
+                        <li class="nav__item"><a href="#menu" class="nav__link">Metode</a></li>
+                        
+                        
+                        <li><i class='bx bx-moon change-theme' id="theme-button"></i></li>
+                    </ul>
+                </div>
+
+                <div class="nav__toggle" id="nav-toggle">
+                    <i class='bx bx-menu'></i>
+                </div>
+            </nav>
+        </header>
+
+        <main class="l-main">
+            
+            <!--========== HOME ==========-->
+            <section class="home" id="home">
+                <div class="home__container bd-container bd-grid">
+                    <div class="home__data">
+                        <h1 class="home__title">Quantum </h1>
+                        <h2 class="home__subtitle">Watermarking</h2>
+                        <h3 class="home__quotes">"No burden is so heavy for a man to bear as a succession of happy days" <br>-Max Planck</h3>
+                        <a href="html/regis.html" class="button">Mulai Sekarang</a>
+                    </div>
+    
+                    <img src="assets/img/home.jpg" alt="" class="home__img">
+                </div>
+            </section>
+            
+            <!--========== TEORI ==========-->
+            <section class="about section bd-container" id="about">
+                <div class="about__container  bd-grid">
+                    <div class="about__data">
+                        <span class="section-subtitle about__initial">Teori</span>
+                        <h2 class="section-title about__initial">Teori awal Quantum Audio Watermarking</h2>
+                        <p class="about__description">Belajar dengan mudah tentang Audio Watermarking menggunakan teknik Quantum.</p>
+                        <a href="Q.pdf" id="pdfButton" class="button">Teori Dasar</a>
+                    </div>
+
+                    <img src="assets/img/about.jpg" alt="" class="about__img">
+                </div>
+            </section>
+
+            
+
+            <!--========== MENU ==========-->
+            <section class="menu section bd-container" id="menu">
+                <span class="section-subtitle">Metode</span>
+                <h2 class="section-title">Metode yang Disajikan</h2>
+
+                <div class="menu__container bd-grid">
+                    <div class="menu__content">
+                        <img src="assets/img/plate1.png" alt="" class="menu__img">
+                        <h3 class="menu__name">DCT</h3>
+                        <span class="menu__detail">Discrete cosine transform</span>
+                        <a href="DCT.pdf" id="pdfButton1" class="button menu__button">lihat</a>
+                    </div>
+
+                    <div class="menu__content">
+                        <img src="assets/img/plate2.png" alt="" class="menu__img">
+                        <h3 class="menu__name">LSB</h3>
+                        <span class="menu__detail">Least Significat Bit</span>
+                        <a href="LSB.pdf" id="pdfButton2" class="button menu__button">lihat</a>
+                    </div>
+                    
+                    <div class="menu__content">
+                        <img src="assets/img/plate3.png" alt="" class="menu__img">
+                        <h3 class="menu__name">Wavelet</h3>
+                        <span class="menu__detail">Wavelet Transform</span>
+                        <a href="W.pdf" id="pdfButton3" class="button menu__button">lihat</a>
+                    </div>
+                </div>
+            </section>
+
+            <!--===== APP =======-->
+            <section class="app section bd-container">
+                <div class="app__container bd-grid">
+                    <div class="app__data">
+                        <span class="section-subtitle app__initial">App</span>
+                        <h2 class="section-title app__initial">App sudah tersedia di</h2>
+                        
+                        <div class="app__stores">
+                            <a href="#"><img src="assets/img/app1.png" alt="" class="app__store"></a>
+                            <a href="https://play.google.com/store/apps/details?id=com.mobile.legends&hl=en-ID"><img src="assets/img/app2.png" alt="" class="app__store"></a>
+                        </div>
+                    </div>
+
+                    <img src="assets/img/movil-app.png" alt="" class="app__img">
+                </div>
+            </section>
+        <!--========== SCROLL REVEAL ==========-->
+        <script src="https://unpkg.com/scrollreveal"></script>
+
+        <!--========== MAIN JS ==========-->
+        <script src="assets/js/main.js"></script>
+
+        <script>
+            // Ambil tombol-tombol berdasarkan ID
+            const pdfButton = document.getElementById('pdfButton');
+            const pdfButton1 = document.getElementById('pdfButton1');
+            const pdfButton2 = document.getElementById('pdfButton2');
+            const pdfButton3 = document.getElementById('pdfButton3');
+          
+            // Tambahkan event listener untuk mendeteksi klik pada tombol-tombol
+            pdfButton.addEventListener('click', function(event) {
+                event.preventDefault(); // Mencegah aksi default dari tautan (navigasi ke halaman lain)
+                const pdfUrl = pdfButton.getAttribute('href');
+                window.open(pdfUrl, '_blank');
+              });
+
+            pdfButton1.addEventListener('click', function(event) {
+              event.preventDefault(); // Mencegah aksi default dari tautan (navigasi ke halaman lain)
+              const pdfUrl = pdfButton1.getAttribute('href');
+              window.open(pdfUrl, '_blank');
+            });
+          
+            pdfButton2.addEventListener('click', function(event) {
+              event.preventDefault();
+              const pdfUrl = pdfButton2.getAttribute('href');
+              window.open(pdfUrl, '_blank');
+            });
+          
+            pdfButton3.addEventListener('click', function(event) {
+              event.preventDefault();
+              const pdfUrl = pdfButton3.getAttribute('href');
+              window.open(pdfUrl, '_blank');
+            });
+          </script>
+    </body>
+</html>
