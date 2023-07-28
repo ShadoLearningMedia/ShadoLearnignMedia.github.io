@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" type="x-icon" href="../image/log.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHADO</title>
+    <link rel="stylesheet" href="../css/extrac.css">
+</head>
+<body>
+    <div class="container">
+        <div class="glass">
+            <nav class="navbar">
+              <input type="checkbox" id="mobile-icon" class="chc">
+              <label for="mobile-icon" class="toggle"><span class="hamburger-icon"></span></label>
+                <img src="../image/logo.png" class="logo">
+                <div class="nav__menu" id="nav-menu">
+                    <ul>
+                        <li><a href="../html/Dasar.html">Dasar Teori</a></li>
+                        <li><a href="../html/embed.html">Embedding</a></li>
+                        <li class="act"><a href="../html/extrac.html">Ekstraksi</a></li>
+                        <button id="logout-button" value="ok">Logout</button>
+                    </ul>
+                </div>
+              </nav>
+              <h5>Proses extraction adalah proses pengambilan kembali citra watermark yang telah disisipkan. Pada proses ini audio hasil embedding akan diubah kembali ke domain kuantum dan dilakukan pengambilan watermark. Pada proses ini juga dapat ditambahkan serangan dengan  probabilitas noise yang dapat diatur yang dapat diatur.</h5>
+            <div class="content">
+                <h2>Pilih Audio Terwatermark</h1>
+                <input type="file" class="form-control" id="audio-terwatermark" accept="audio/*" >
+
+                <h2>Pilih File .mat</h2>
+                <input type="file" class="form-control" id="citra-watermark" accept=".mat"> 
+                    
+                <div class="ext">
+                    <div class="input">
+                        <div class="input__overlay" id="input-overlay"></div>
+                          <input type="password" name="password" id="input-pass" placeholder="Masukan kunci dari 1-4">
+                          <i class='bx bx-hide input__icon' id="input-icon"></i>
+                      </div>
+                    <button class="uload-box" id="ext">Ekstrak</button><br>
+                </div>
+                <p id="upload-message" style="color: red; display: none;">Upload terlebih dahulu</p>
+            </div>
+            <div class="select">
+                <h2>Pilih metode</h2>
+                <select class="mtd" name="metode" id="metode">
+                    <option selected disabled>pilih metode</option>
+                    <option value="lsb">qLSB</option>
+                    <option value="dct">qDCT</option>
+                    <option value="wav">qWavelet</option>
+                </select>
+                <h2>Pilih Serangan</h2>
+                <select class="atk" name="atk" id="atk">
+                    <option selected disabled>pilih serangan</option>
+                    <option id="atk1" value="atk1">Tanpa Serangan</option>
+                    <option id="atk2" value="atk2">Serangan Pauli-X</option>
+                    <option id="atk3" value="atk3">Serangan Pauli-Z</option>
+                    <option id="atk4" value="atk4">Serangan CNOT</option>
+                </select>
+                <h2>Probabilitas Noise</h2>
+                <select class="prob" name="nilai" id="prob">
+                  <option selected disabled>Probabilitas Noise</option>
+                  <option id="0.001" value="0.001">0,001</option>
+                  <option id="0.005" value="0.005">0,005</option>
+                  <option id="0.01" value="0.01">0,01</option>
+                  <option id="0.05" value="0.05">0,05</option>
+                  <option id="0.1" value="0.1">0,1</option>
+                  <option id="0.5" value="0.5">0,5</option>
+                  <option id="0.9" value="0.9">0,9</option>
+              </select>
+                <p id="upload-message2" style="color: red; display: none;">Pilih Metode dan<br>Serangan terlebih dahulu</p>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="module">
+    import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-analytics.js";
+    import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-storage.js";
+    import { getDatabase, ref as dbRef, set, onValue } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-database.js";
+
+    const firebaseConfig = {
+    apiKey: "AIzaSyBbp6MW8mnwVpnU7iiHRajv4T-x0F9T6Js",
+    authDomain: "taproject-35eab.firebaseapp.com",
+    databaseURL: "https://taproject-35eab-default-rtdb.firebaseio.com",
+    projectId: "taproject-35eab",
+    storageBucket: "taproject-35eab.appspot.com",
+    messagingSenderId: "526842564345",
+    appId: "1:526842564345:web:a6da3189c98e9d4983dc28",
+    measurementId: "G-DQFC20F3TK"
+    };
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    console.log("Success connected");
+    const auth = getAuth();
+    const storage = getStorage();
+    const db = getDatabase();
+    const analytics = getAnalytics(app);
+    const database = getDatabase(app);
+    
+    // Fungsi untuk memeriksa ukuran file
+    function checkFileSize(file, maxSizeInKB) {
+      const fileSize = file.size / 1024;
+      return fileSize <= maxSizeInKB;
+    }
+
+    // Full Code with Modification
+
+    // ==== Upload Audio Terwatermark === ///
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const UID = user.uid;
+
+        document.getElementById("ext").addEventListener("click", function (event) {
+          const files = document.getElementById("audio-terwatermark").files;
+          const selectedMethod = document.getElementById("metode").value;
+          const selectedAttack = document.getElementById("atk").value;
+          let selectedProb = document.getElementById("prob").value;
+          const timestamp = new Date().getTime();
+
+          // Check if the user has selected an attack, if not, set selectedProb to "0.01" (corresponds to prob_noise = 10)
+          if (!selectedAttack) {
+            selectedProb = "0.01";
+          }
+
+          if (files.length > 0 && selectedMethod && selectedProb) {
+            const uploadCount = files.length;
+            let uploadedFiles = 0;
+
+            for (let i = 0; i < files.length; i++) {
+              const file = files[i];
+              const extension = "." + file.type.split("audio/").pop();
+              const fileNamePrefix = getFileNamePrefix(selectedMethod);
+              const fileNameSuffix = getFileNamePrefix(selectedAttack);
+              const fileNameProb = getFileNamePrefix(selectedProb);
+              const updatedFileName = `${UID}_${fileNamePrefix}${fileNameSuffix}${fileNameProb}_terwatermark_${timestamp}${extension}`;
+
+              const storageRef = ref(storage, "ekstraksi/" + updatedFileName);
+              const uploadTask = uploadBytesResumable(storageRef, file);
+
+              uploadTask
+                .then(() => {
+                  uploadedFiles++;
+
+                  if (uploadedFiles === uploadCount) {
+                    console.log("All files uploaded successfully!");
+                    //window.location.href = "../html/Dextrack.html";
+                  }
+                })
+                .catch((error) => {
+                  console.error("Error uploading file:", error);
+                });
+
+              const pathfile = "ekstraksi/";
+              const status = 0;
+              const passwordInput = document.getElementById("input-pass").value;
+
+              const fileData = {
+                key: passwordInput,
+                status: status,
+                nama_file: updatedFileName,
+                path_file: pathfile,
+                timestamp: new Date(timestamp).toLocaleString(),
+                uid: UID,
+                metode: getDatabaseMetode(selectedMethod),
+                attack: getDatabaseAttack(selectedAttack),
+                prob_noise: getDatabaseProb(selectedProb),
+              };
+
+              set(dbRef(database, `file_terwatermark/${timestamp}`), fileData)
+                .then(() => {
+                  console.log("File data recorded successfully!");
+                  // Navigasi ke laman selanjutnya setelah semua file selesai diunggah
+                  //window.location.href = "../html/Dextrack.html";
+                })
+                .catch((error) => {
+                  console.error("Error recording file data:", error);
+                });
+            }
+          } else {
+            let uploadMessage = document.getElementById("upload-message");
+            let uploadMessage2 = document.getElementById("upload-message2");
+            uploadMessage.style.display = "block";
+            uploadMessage2.style.display = "block";
+          }
+        });
+      }
+    });
+
+    function getFileNamePrefix(value) {
+      switch (value) {
+        case "lsb":
+          return "lsb_";
+        case "dct":
+          return "dct_";
+        case "wav":
+          return "wavelet_";
+        case "atk1":
+          return "tanpa_";
+        case "atk2":
+          return "Pauli-x_";
+        case "atk3":
+          return "Pauli-z_";
+        case "atk4":
+          return "CNOT_";
+        case "0.001":
+          return "0.001_";
+        case "0.005":
+          return "0.005_";
+        case "0.01":
+          return "0.01_";
+        case "0.05":
+          return "0.05_";
+        case "0.1":
+          return "0.1_";
+        case "0.5":
+          return "0.5_";
+        case "0.9":
+          return "0.9_";
+        default:
+          return "";
+      }
+    }
+
+    function getDatabaseMetode(value) {
+      switch (value) {
+        case "lsb":
+          return "lsb";
+        case "dct":
+          return "dct";
+        case "wav":
+          return "wavelet";
+        default:
+          return "";
+      }
+    }
+
+    function getDatabaseAttack(value) {
+      switch (value) {
+        case "atk1":
+          return "0";
+        case "atk2":
+          return "1";
+        case "atk3":
+          return "2";
+        case "atk4":
+          return "3";
+        default:
+          return "";
+      }
+    }
+
+    function getDatabaseProb(value) {
+      switch (value) {
+        case "0.001":
+          return 1;
+        case "0.005":
+          return 5;
+        case "0.01":
+          return 10;
+        case "0.05":
+          return 50;
+        case "0.1":
+          return 100;
+        case "0.5":
+          return 500;
+        case "0.9":
+          return 900;
+        default:
+          return 0; // Return 0 for the default case (when the user doesn't select an attack)
+      }
+    }
+  
+    /*===============  Mulai data.mat ===============*/
+    // Mendengarkan perubahan status otentikasi pengguna
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // Pengguna sedang diautentikasi
+        const UID = user.uid;
+
+        // Mengikuti logika Anda untuk mengunggah file
+        document.getElementById("ext").addEventListener("click", function (event) {
+          const files = document.getElementById("citra-watermark").files;
+          const selectedMethod = document.getElementById("metode").value;
+          const selectedAttack = document.getElementById("atk").value;
+          const selectedProb = document.getElementById("prob").value;
+          const timestamp = new Date().getTime();
+
+          if (files.length > 0 && selectedMethod && selectedAttack && selectedProb) {
+            const uploadCount = files.length;
+            let uploadedFiles = 0;
+
+            for (let ii = 0; ii < files.length; ii++) {
+              const file = files[ii];
+              const extension = ".mat";
+              const fileNamePrefix = getFileNamePrefix(selectedMethod);
+              const fileNamePrefik = getFileNamePrefix(selectedAttack);
+              const fileNamePrefip = getFileNamePrefix(selectedProb);
+              const updatedFileName = `${UID}_${fileNamePrefix}${fileNamePrefik}${fileNamePrefip}watermark_${timestamp}${extension}`;
+
+              const storageRef = ref(storage, "file-watermark/" + updatedFileName);
+              const uploadTask = uploadBytesResumable(storageRef, file);
+
+              uploadTask
+                .then(() => {
+                  uploadedFiles++;
+
+                  // Memeriksa apakah semua file telah diunggah
+                  if (uploadedFiles === uploadCount) {
+                    console.log("All files uploaded successfully!");
+
+                    const pathfile = "file-watermark/";
+                    const status = 0;
+                    const passwordInput = document.getElementById("input-pass").value;
+
+                    const fileData = {
+                      key: passwordInput,
+                      status: status,
+                      nama_file: updatedFileName,
+                      path_file: pathfile,
+                      timestamp: new Date(timestamp).toLocaleString(),
+                      uid: UID,
+                      metode: getDatabaseMetode(selectedMethod),
+                      attack: getDatabaseAttack(selectedAttack),
+                      prob_noise: getDatabaseProb(selectedProb),
+                    };
+
+                    set(dbRef(database, `file_watermark_ekstrak/${timestamp}`), fileData)
+                      .then(() => {
+                        console.log("File data recorded successfully!");
+                        window.location.href = "../html/Dextrack.html";
+                      })
+                      .catch((error) => {
+                        console.error("Error recording file data:", error);
+                      });
+                  }
+                })
+                .catch((error) => {
+                  console.error("Error uploading file:", error);
+                });
+            }
+          } else {
+            let uploadMessage = document.getElementById("upload-message");
+            let uploadMessage2 = document.getElementById("upload-message2");
+            uploadMessage.style.display = "block";
+            uploadMessage2.style.display = "block";
+          }
+        });
+      }
+    });
+        
+      /*=== Perintah Pilih Metode dan Serangan terlebih dahulu ========*/
+      document.getElementById("atk").addEventListener("input", function(event) {
+        let fileInput = document.getElementById("citra-watermark");
+        let embedButton = document.getElementById("ext");
+        let uploadMessage = document.getElementById("upload-message2");
+
+        if (fileInput.files.length > 0 && event.target.value !== "") {
+          embedButton.style.display = "block";
+          uploadMessage.style.display = "none";
+        } else {
+          embedButton.style.display = "none";
+          uploadMessage.style.display = "block";
+        }
+      });
+
+      /*=============== Perintah isi Terlebih dahulu ===============*/
+      document.getElementById("citra-watermark").addEventListener("input", function(event) {
+        let fileInput = event.target;
+        let embedButton = document.getElementById("ext");
+        let uploadMessage = document.getElementById("upload-message");
+
+        if (fileInput.files.length > 0 && document.getElementById("metode").value !== "") {
+          embedButton.style.display = "block";
+          uploadMessage.style.display = "none";
+        } else {
+          embedButton.style.display = "none";
+          uploadMessage.style.display = "block";
+        }
+      });
+
+      var attackSelect = document.getElementById("atk");
+      var probSelect = document.getElementById("prob");
+
+      // Memanggil fungsi handleAttackSelection saat terjadi perubahan pada menu serangan
+      attackSelect.addEventListener("change", handleAttackSelection);
+
+      // Memanggil fungsi handleAttackSelection saat halaman dimuat
+      window.addEventListener("load", function () {
+        handleAttackSelection();
+
+        if (attackSelect.value === "atk1") {
+          probSelect.disabled = true;
+          probSelect.selectedIndex = 0;
+        } else {
+          probSelect.disabled = false;
+        }
+      });
+
+  function handleAttackSelection() {
+    var attackSelect = document.getElementById("atk");
+    var probSelect = document.getElementById("prob");
+
+    if (attackSelect.value === "atk1") {
+      probSelect.style.display = "none";
+      probSelect.selectedIndex = 0;
+    } else {
+      probSelect.style.display = "block";
+    }
+  }
+
+    // Initialize Firebase logout
+    
+    let logoutButton = document.getElementById("logout-button");
+    console.log(logoutButton);
+
+    logoutButton.addEventListener("click", (e) => {
+        const auth = getAuth(app);
+        signOut(auth)
+            .then(() => {
+            alert("sukses logout");
+            location.href = "../home.html";
+        })
+        .catch((error) => {});
+    });
+    
+     /*=============== SHOW / HIDDEN INPUT ===============*/
+     const showHiddenInput = (inputOverlay, inputPass, inputIcon) =>{
+        const overlay = document.getElementById(inputOverlay),
+        input = document.getElementById(inputPass),
+        iconEye = document.getElementById(inputIcon)
+    
+        iconEye.addEventListener('click', () =>{
+        // Change password to text
+        if(input.type === 'password'){
+            // Switch to text
+            input.type = 'text'
+    
+            // Change icon
+            iconEye.classList.add('bx-show')
+        }else{
+            // Change to password
+            input.type = 'password'
+    
+            // Remove icon
+            iconEye.classList.remove('bx-show')
+        }
+    
+        // Toggle the overlay
+        overlay.classList.toggle('overlay-content')
+        })
+        }
+    
+        showHiddenInput('input-overlay','input-pass','input-icon')
+
+    //----- End
+    
+    //=======Hamberger Navbar======//
+    document.addEventListener('DOMContentLoaded', function() {
+      const links = document.querySelectorAll('.nav__menu a, #logout-button');
+      links.forEach(link => {
+        link.addEventListener('click', () => {
+          const mobileIcon = document.getElementById('mobile-icon');
+          mobileIcon.checked = false;
+        });
+      });
+    });
+  </script>
+</html>
