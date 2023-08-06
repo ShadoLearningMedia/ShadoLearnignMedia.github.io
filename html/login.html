@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" type="x-icon" href="../image/log.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/login.css">
+    <title>SHADO</title>
+</head>
+<body>
+    <section>
+        <div class="form-box">
+            <div class="form-value">
+                <form action="">
+                    <h2>Login</h2>
+                    <div class="inputbox">
+                        <ion-icon name="mail-outline"></ion-icon>
+                        <input type="login_email" name="login_email" id="login_email" class="form-control" required autocomplete="off">
+                        <label for="">Email</label>
+                    </div>
+                    <div class="inputbox">
+                        <div class="input__overlay" id="input-overlay"></div>
+                        <input type="password" name="password" id="input-pass" class="form-control" required>
+                        <i class='bx bx-hide input__icon' id="input-icon"></i>
+                        <label for="">Password</label>
+                    </div>
+                    <div class="forget">
+                        <a href="../html/forget.html">Lupa Password?</a>
+                    </div>
+                    <button type="button" id="login" name="login" class="btn btn-success">Login</button>
+                    <div class="register">
+                        <p> <a href="../html/regis.html">Register</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    
+</body>
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-analytics.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,  sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-auth.js";
+    import { getDatabase, set, ref, update } from "https://www.gstatic.com/firebasejs/9.10.0/firebase-database.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+        apiKey: "AIzaSyBbp6MW8mnwVpnU7iiHRajv4T-x0F9T6Js",
+        authDomain: "taproject-35eab.firebaseapp.com",
+        databaseURL: "https://taproject-35eab-default-rtdb.firebaseio.com",
+        projectId: "taproject-35eab",
+        storageBucket: "taproject-35eab.appspot.com",
+        messagingSenderId: "526842564345",
+        appId: "1:526842564345:web:a6da3189c98e9d4983dc28",
+        measurementId: "G-DQFC20F3TK"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const database = getDatabase(app);
+    const auth = getAuth(app);
+    const db = getDatabase();
+    
+
+   //----- Login code start	  
+document.getElementById("login").addEventListener("click", function() {
+    var email =  document.getElementById("login_email").value;
+    var password = document.getElementById("input-pass").value;
+  
+    signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Signed in 
+      const user = userCredential.user;
+      let userId = Date.now();
+      let now = new Date();
+      let timestamp = now.toLocaleString();
+      update(ref(database, "users_login_web/" + user.uid), {
+        email_db: email,
+        password_db: password,
+        userId: userId,
+        timestamp: timestamp
+      })
+      .then(() => {
+        // Data saved successfully!
+        // alert("user telah sukses login");
+        location.href = "../html/Dasar.html";
+      })
+      .catch((error) => {
+        // The write failed
+        alert(error);
+      });
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      alert("Email atau Password salah");
+    });
+  });
+  
+
+    /*=============== SHOW / HIDDEN INPUT ===============*/
+    const showHiddenInput = (inputOverlay, inputPass, inputIcon) =>{
+    const overlay = document.getElementById(inputOverlay),
+    input = document.getElementById(inputPass),
+    iconEye = document.getElementById(inputIcon)
+
+    iconEye.addEventListener('click', () =>{
+    // Change password to text
+    if(input.type === 'password'){
+        // Switch to text
+        input.type = 'text'
+
+        // Change icon
+        iconEye.classList.add('bx-show')
+    }else{
+        // Change to password
+        input.type = 'password'
+
+        // Remove icon
+        iconEye.classList.remove('bx-show')
+    }
+
+    // Toggle the overlay
+    overlay.classList.toggle('overlay-content')
+    })
+    }
+
+    showHiddenInput('input-overlay','input-pass','input-icon')
+
+    //----- End
+
+      </script>
+</html>
