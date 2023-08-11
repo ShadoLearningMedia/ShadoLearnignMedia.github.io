@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" type="x-icon" href="../image/log.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/forget.css">
+    <title>SHADO</title>
+</head>
+<body>
+    <section>
+        <div class="form-box">
+            <div class="form-value">
+                <form action="">
+                    <h2>Lupa Password</h2>
+                    <div class="inputbox">
+                        <ion-icon name="mail-outline"></ion-icon>
+                        <input type="email" name="login_email" id="login_email" class="form-control" required autocomplete="off">
+                        <label for="">Email</label>
+                    </div>
+                    <div class="paraf">
+                        <p>Masukan email untuk menerima password yang baru</p>
+                    </div><br>
+                    <button type="button" id="forgotpass">Reset</button>
+                    <div class="forget">
+                        <a href="../html/login.html">Kembali ke menu Login</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    <script>
+    // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyBbp6MW8mnwVpnU7iiHRajv4T-x0F9T6Js",
+            authDomain: "taproject-35eab.firebaseapp.com",
+            projectId: "taproject-35eab",
+            storageBucket: "taproject-35eab.appspot.com",
+            messagingSenderId: "526842564345",
+            appId: "1:526842564345:web:a6da3189c98e9d4983dc28"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        // Initialize variables
+        const auth = firebase.auth();
+        const database = firebase.database();
+
+        // Get all our input fields
+        var email = document.getElementById("login_email");
+        var resetButton = document.getElementById("forgotpass");
+
+        // Set up our register function
+        function forgotpass() {
+            var email = document.getElementById('login_email').value;
+            firebase.auth().sendPasswordResetEmail(email)
+            .then(() => {
+                alert('kami telah mengirim password reset ke ' + email);
+            })
+            .catch((error) => {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                // ...
+            });
+        }
+         // Add event listener to reset button
+         resetButton.addEventListener("click", forgotpass);
+    </script>
+</html>
